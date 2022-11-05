@@ -37,3 +37,16 @@
       state: latest
     when: ansible_distribution == "RedHat"
 
+- hosts: db_servers
+  become: true
+  tasks:
+
+  - name: Install mariadb on Ubuntu
+    apt:
+      name:
+        - mariadb-server
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+
+

@@ -1,39 +1,34 @@
+---
+
 - hosts: all
   become: true
   tasks:
 
-  - name: update repository index
+  - name: update debian repository index
     apt:
       update_cache: yes
     when: ansible_distribution in ["Debian", "Ubuntu"]
+  
+  - name: update redhat repository index
+    dnf:
+       name: "*"
+       state: latest
+    when: ansible_distribution == "RedHat"
 
-  - name: Install apache2 package
+  - name: Install apache2 and php package
     apt:
-       name: apache2
+       name: 
+         - apache2
+         - libapache2-mod-php
        state: latest
     when: ansible_distribution == "Ubuntu"
 
-  - name: Install php support package
-    apt:
-       name: libapache2-mod-php
-       state: latest
-    when: ansible_distribution == "Ubuntu"
-
-  - name: update repository index
+  - name: Install httpd and php package
     dnf:
-      name: "*"
-      state: latest
-    when: ansible_distribution == "RedHat"
-
-  - name: Install apache2 package
-    dnf:
-       name: httpd
+       name: 
+         - httpd
+         - php
        state: latest
     when: ansible_distribution == "RedHat"
 
-  - name: Install php support package
-    dnf:
-       name: php
-       state: latest
-    when: ansible_distribution == "RedHat"
 

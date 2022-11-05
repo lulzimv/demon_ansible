@@ -48,5 +48,15 @@
       state: latest
     when: ansible_distribution == "Ubuntu"
 
+- hosts: file_servers
+  become: true
+  tasks:
+
+  - name: Install vsftpd on Ubuntu
+    apt:
+      name:
+        - vsftpd
+      state: latest
+    when: ansible_distribution == "Ubuntu"
 
 

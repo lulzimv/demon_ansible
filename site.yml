@@ -15,6 +15,40 @@
       upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
+  
+  - name: Create file
+    file:
+      path: /opt/my_new_file.txt
+      state: touch
+
+  - name: Edit created file
+    copy:
+      dest: "/opt/my_new_file.txt"
+      content: |
+        line 01
+        line 02
+        line 03
+
+  - name: Edit hosts file
+    copy:
+      dest: "/etc/hosts"
+      content: |
+        192.168.20.21   ansible
+        192.168.20.22   wazuh
+        192.168.20.23   rhel08
+        192.168.20.24   ubu20
+
+  - name: Create a new directory
+    file:
+      path: "/tarzan"
+      state: absent 
+
+  - name: Ensure SELinux is set to disabled  mode
+    ansible.builtin.lineinfile:
+      path: /etc/selinux/config
+      regexp: '^SELINUX='
+      line: SELINUX=disabled
+    when: ansible_distribution == "RedHat"
 
 - hosts: web_servers
   become: true

@@ -5,12 +5,14 @@
   tasks:
 
   - name: install updates (RedHat)
+    tags: always
     dnf:
       update_only: yes
       update_cache: yes
     when: ansible_distribution == "RedHat"
 
   - name: install updates (Ubuntu)
+    tags: always
     apt:
       upgrade: dist
       update_cache: yes
@@ -55,6 +57,7 @@
   tasks:
 
   - name: Install apache and php for Ubuntu  servers
+    tags: apache,apache2,ubuntu
     apt:
       name:
         - apache2
@@ -64,6 +67,7 @@
     when: ansible_distribution == "Ubuntu"
 
   - name: Install httpd and php for RedHat servers
+    tags: apache,redhat,httpd
     dnf:
       name:
         - httpd
@@ -71,11 +75,48 @@
       state: latest
     when: ansible_distribution == "RedHat"
 
+  - name: copy default html file for site
+    tags: apache,apache2,httpd
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: reload service httpd, in all cases
+    systemd:
+      name: httpd
+      state: reloaded
+    when: ansible_distribution == "RedHat"
+
+  - name: enable service httpd and ensure it is not masked
+    systemd:
+      name: httpd
+      enabled: yes
+      masked: no
+    when: ansible_distribution == "RedHat"
+
+  - name: Enable http on firewalld
+    firewalld:
+      zone: public
+      service: http
+      permanent: yes
+      state: enabled
+    when: ansible_distribution == "RedHat"
+    
+  - name: Reload Firewalld service
+    service:
+      name: firewalld
+      state: restarted
+    when: ansible_distribution == "RedHat"
+
 - hosts: db_servers
   become: true
   tasks:
 
   - name: Install mariadb on Ubuntu
+    tags: centos,db,mariadb
     apt:
       name:
         - mariadb-server

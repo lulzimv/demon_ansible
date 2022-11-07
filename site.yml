@@ -140,7 +140,7 @@
       state: latest
     when: ansible_distribution == "Ubuntu"
 
-- hosts: Windows 
+- hosts: windows 
   become: false
   gather_facts: false
   tasks:

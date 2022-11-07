@@ -9,13 +9,13 @@
 [file_servers]
 192.168.20.22   # apache_package=apache2 php_package=libapache2-mod-php
 
-[windows]
-192.168.20.154	
-[windows:vars]
-ansible_user=ansible
-ansible_password=ansible
-ansible_connection=winrm
-ansible_winrm_transport=basic
-ansible_winrm_scheme=http
-ansible_winrm_server_cert_validation=ignore
-ansible_port=5985
+#[windows]
+#192.168.20.154	
+#[windows:vars]
+#ansible_user=ansible
+#ansible_password=ansible
+#ansible_connection=winrm
+#ansible_winrm_transport=basic
+#ansible_winrm_scheme=http
+#ansible_winrm_server_cert_validation=ignore
+#ansible_port=5985

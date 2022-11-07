@@ -17,7 +17,13 @@
       upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
-  
+
+  - name: Install all updates and reboot as many times as needed
+    win_updates:
+      category_names: '*'
+      reboot: yes
+    when: ansible_distribution == "Windows"
+      
   - name: Create file
     file:
       path: /opt/my_new_file.txt

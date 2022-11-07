@@ -140,7 +140,7 @@
       state: latest
     when: ansible_distribution == "Ubuntu"
 
-- hosts: Windows ping and update
+- hosts: Windows 
   become: false
   gather_facts: false
   tasks:

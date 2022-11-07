@@ -72,7 +72,7 @@
       name:
         - httpd
         - php
-      state: absent
+      state: latest
     when: ansible_distribution == "RedHat"
 
   - name: copy default html file for site

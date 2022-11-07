@@ -10,7 +10,7 @@
 192.168.20.22   # apache_package=apache2 php_package=libapache2-mod-php
 
 [windows]
-192.168.20.25	
+192.168.20.154	
 [windows:vars]
 ansible_user=ansible
 ansible_password=ansible

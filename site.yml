@@ -140,4 +140,18 @@
       state: latest
     when: ansible_distribution == "Ubuntu"
 
+- hosts: Windows ping and update
+  become: false
+  gather_facts: false
+  tasks:
+
+  - name: test windows connection
+    win_ping:
+
+  - name: Install all updates and reboot as many times as needed
+    win_updates:
+      category_names: '*'
+      reboot: yes
+    when: ansible_distribution == "Windows"
+
 

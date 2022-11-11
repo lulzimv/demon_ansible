@@ -28,13 +28,11 @@
   become: true
   tasks:
 
-
   - name: add ssh key for ansible
     tags: always
     authorized_key:
       user: ansible
       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJJR7MqY74zLM0lbzFAb1YEkychaLFetrN7VpxyFeFmv Ansible Key Access"
-
 
 # Note: Download url zip file and install on dest      
   #- name: install unzip

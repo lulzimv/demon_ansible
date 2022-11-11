@@ -112,14 +112,6 @@
     when: ansible_distribution == "RedHat"
     register: httpd
 
-  - name: restart httpd (Red Hat)
-    tags: apache,centos,httpd
-    service:
-      name: httpd
-      state: restarted
-      enabled: yes
-    when: httpd.changed      
-
   - name: copy default html file for site
     tags: apache,apache2,httpd
     copy:

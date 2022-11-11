@@ -105,7 +105,7 @@
 
   - name: change e-mail address for admin
     tags: apache,centos,httpd
-    lineinefile: 
+    lineinfile: 
       path: /etc/httpd/conf/httpd.conf
       regexp: '^ServerAdmin'
       line: ServerAdmin lulzimveliu@netkos.live

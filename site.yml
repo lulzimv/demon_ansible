@@ -23,7 +23,21 @@
       category_names: '*'
       reboot: yes
     when: ansible_distribution == "Windows"
-      
+
+# Note: Download url zip file and install on dest      
+  #- name: install unzip
+  #  package:
+  #    name: unzip
+
+  #- name: install terraform
+  #  unarchive:
+  #    src: https://urlinkofzipfile
+  #    dest: /usr/local/bin
+  #    remote_src: yes
+  #    mode: 0755
+  #    owner: root
+  #    group: root
+
   - name: Create file
     file:
       path: /opt/my_new_file.txt

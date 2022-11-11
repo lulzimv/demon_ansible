@@ -106,7 +106,7 @@
     tags: apache,centos, httpd
     service:
       name: httpd
-      state: start
+      state: started
       enabled: yes
     when: ansible_distribution == "RedHat"
 

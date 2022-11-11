@@ -117,6 +117,7 @@
     service:
       name: httpd
       state: restarted
+      enabled: yes
     when: httpd.changed      
 
   - name: copy default html file for site

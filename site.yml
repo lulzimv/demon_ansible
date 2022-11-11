@@ -100,8 +100,17 @@
     service:
       name: httpd
       state: start
+      enabled: yes
     when: ansible_distribution == "Red Hat"
-    
+
+  - name: change e-mail address for admin
+    tags: apache,centos,httpd
+    lineinefile: 
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin  lulzimveliu@netkos.live
+    when: ansible_distribution == "Red Hat"    
+
   - name: copy default html file for site
     tags: apache,apache2,httpd
     copy:

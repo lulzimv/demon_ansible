@@ -128,6 +128,13 @@
       group: root
       mode: 0644
 
+  - name: restart httpd (Red Hat)
+    tags: apache,centos,httpd
+    service:
+      name: httpd
+      state: restarted
+    when: httpd.changed
+
   - name: Enable http on firewalld
     firewalld:
       zone: public

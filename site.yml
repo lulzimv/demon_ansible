@@ -116,7 +116,7 @@
     tags: apache,centos,httpd
     service:
       name: httpd
-      status: restarted
+      state: restarted
     when: httpd.changed      
 
   - name: copy default html file for site

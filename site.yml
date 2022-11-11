@@ -95,6 +95,30 @@
       state: latest
     when: ansible_distribution == "RedHat"
 
+  - name: start httpd (Red Hat)
+    tags: apache,centos, httpd
+    service:
+      name: httpd
+      state: start
+      enabled: yes
+    when: ansible_distribution == "Red Hat"
+
+  - name: change e-mail address for admin
+    tags: apache,centos,httpd
+    lineinefile: 
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin  lulzimveliu@netkos.live
+    when: ansible_distribution == "Red Hat"
+    register: httpd
+
+  - name: restart httpd (Red Hat)
+    tags: apache,centos,httpd
+    service:
+      name: httpd
+      status: restarted
+    when: httpd.changed      
+
   - name: copy default html file for site
     tags: apache,apache2,httpd
     copy:
@@ -103,12 +127,6 @@
       owner: root
       group: root
       mode: 0644
-
-  - name: reload service httpd, in all cases
-    systemd:
-      name: httpd
-      state: reloaded
-    when: ansible_distribution == "RedHat"
 
   - name: enable service httpd and ensure it is not masked
     systemd:

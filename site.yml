@@ -110,7 +110,7 @@
       regexp: '^ServerAdmin'
       line: ServerAdmin lulzimveliu@netkos.live
     when: ansible_distribution == "RedHat"
-    register: httpd
+#    register: httpd
 
   - name: copy default html file for site
     tags: apache,apache2,httpd

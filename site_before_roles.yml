@@ -1,0 +1,199 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update repo cache (RedHat)
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "RedHat"
+
+  - name: update repo cache (Ubuntu)
+    tags: always
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install all updates and reboot as many times as needed
+    win_updates:
+      category_names: '*'
+      reboot: yes
+    when: ansible_distribution == "Windows"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: add ssh key for ansible
+    tags: always
+    authorized_key:
+      user: ansible
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJJR7MqY74zLM0lbzFAb1YEkychaLFetrN7VpxyFeFmv Ansible Key Access"
+
+# Note: Download url zip file and install on dest      
+  #- name: install unzip
+  #  package:
+  #    name: unzip
+
+  #- name: install terraform
+  #  unarchive:
+  #    src: https://urlinkofzipfile
+  #    dest: /usr/local/bin
+  #    remote_src: yes
+  #    mode: 0755
+  #    owner: root
+  #    group: root
+
+  - name: Create file
+    file:
+      path: /opt/my_new_file.txt
+      state: touch
+
+  - name: Edit created file
+    copy:
+      dest: "/opt/my_new_file.txt"
+      content: |
+        line 01
+        line 02
+        line 03
+
+  - name: Edit hosts file
+    copy:
+      dest: "/etc/hosts"
+      content: |
+        192.168.20.21   ansible
+        192.168.20.22   wazuh
+        192.168.20.23   rhel08
+        192.168.20.24   ubu20
+
+  - name: Create a new directory
+    file:
+      path: "/tarzan"
+      state: absent 
+
+  - name: Ensure SELinux is set to disabled  mode
+    ansible.builtin.lineinfile:
+      path: /etc/selinux/config
+      regexp: '^SELINUX='
+      line: SELINUX=disabled
+    when: ansible_distribution == "RedHat"
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+  - name: Install apache and php for Ubuntu  servers
+    tags: apache,apache2,ubuntu
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install httpd and php for RedHat servers
+    tags: apache,redhat,httpd
+    dnf:
+      name:
+        - httpd
+        - php
+      state: latest
+    when: ansible_distribution == "RedHat"
+
+  - name: enable service httpd and ensure it is not masked
+    systemd:
+      name: httpd
+      enabled: yes
+      masked: no
+    when: ansible_distribution == "RedHat"
+
+  - name: start httpd (Red Hat)
+    tags: apache,centos, httpd
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "RedHat"
+
+  - name: change e-mail address for admin
+    tags: apache,centos,httpd
+    lineinfile: 
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin lulzimveliu@netkos.live
+    when: ansible_distribution == "RedHat"
+    register: httpd
+
+  - name: copy default html file for site
+    tags: apache,apache2,httpd
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: restart httpd (Red Hat)
+    tags: apache,centos,httpd
+    service:
+      name: httpd
+      state: restarted
+    when: httpd.changed
+
+  - name: Enable http on firewalld
+    firewalld:
+      zone: public
+      service: http
+      permanent: yes
+      state: enabled
+    when: ansible_distribution == "RedHat"
+    
+  - name: Reload Firewalld service
+    service:
+      name: firewalld
+      state: restarted
+    when: ansible_distribution == "RedHat"
+
+- hosts: db_servers
+  become: true
+  tasks:
+
+  - name: Install mariadb on Ubuntu
+    tags: centos,db,mariadb
+    apt:
+      name:
+        - mariadb-server
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: file_servers
+  become: true
+  tasks:
+
+  - name: Install vsftpd on Ubuntu
+    apt:
+      name:
+        - vsftpd
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: windows 
+  become: false
+  gather_facts: false
+  tasks:
+
+  - name: Test windows connection
+    win_ping:
+
+  - name: Install all updates and reboot as many times as needed
+    win_updates:
+      category_names: '*'
+      reboot: yes
+    when: ansible_distribution == "Windows"
+
+

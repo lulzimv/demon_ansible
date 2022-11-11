@@ -7,8 +7,8 @@
   - name: install updates (RedHat)
     tags: always
     dnf:
-      update_only: yes
-      update_cache: yes
+      name: "*"
+      state: latest
     when: ansible_distribution == "RedHat"
 
   - name: install updates (Ubuntu)

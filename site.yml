@@ -4,18 +4,18 @@
   become: true
   tasks:
 
-  - name: install updates (RedHat)
+  - name: update repo cache (RedHat)
     tags: always
     dnf:
-      name: "*"
-      state: latest
+      update_cache: yes
+    changed_when: false
     when: ansible_distribution == "RedHat"
 
-  - name: install updates (Ubuntu)
+  - name: update repo cache (Ubuntu)
     tags: always
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Ubuntu"
 
   - name: Install all updates and reboot as many times as needed
@@ -28,11 +28,6 @@
   become: true
   tasks:
 
-  - name: create user
-    tags: always
-    user:
-      name: ansible
-      groups: root
 
   - name: add ssh key for ansible
     tags: always
@@ -40,14 +35,6 @@
       user: ansible
       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJJR7MqY74zLM0lbzFAb1YEkychaLFetrN7VpxyFeFmv Ansible Key Access"
 
-  - name: add suoders file for ansible
-    tags: always
-    copy:
-      src: sudoer_ansible
-      dest: /etc/sudoers.d/ansible
-      owner: root
-      group: root
-      mode: 0440
 
 # Note: Download url zip file and install on dest      
   #- name: install unzip

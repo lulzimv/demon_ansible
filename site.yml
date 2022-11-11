@@ -31,20 +31,20 @@
   - name: create user
     tags: always
     user:
-      name: simone
+      name: ansible
       groups: root
 
-  - name: add ssh key for simone
+  - name: add ssh key for ansible
     tags: always
     authorized_key:
-      user: simone
+      user: ansible
       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJJR7MqY74zLM0lbzFAb1YEkychaLFetrN7VpxyFeFmv Ansible Key Access"
 
-  - name: add suoders file for simone
+  - name: add suoders file for ansible
     tags: always
     copy:
-      src: sudoer_simone
-      dest: /etc/sudoers.d/simone
+      src: sudoer_ansible
+      dest: /etc/sudoers.d/ansible
       owner: root
       group: root
       mode: 0440

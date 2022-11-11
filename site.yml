@@ -101,7 +101,7 @@
       name: httpd
       state: start
       enabled: yes
-    when: ansible_distribution == "Red Hat"
+    when: ansible_distribution == "RedHat"
 
   - name: change e-mail address for admin
     tags: apache,centos,httpd

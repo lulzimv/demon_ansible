@@ -108,7 +108,7 @@
     lineinefile: 
       path: /etc/httpd/conf/httpd.conf
       regexp: '^ServerAdmin'
-      line: ServerAdmin  lulzimveliu@netkos.live
+      line: ServerAdmin lulzimveliu@netkos.live
     when: ansible_distribution == "Red Hat"
     register: httpd
 

@@ -43,7 +43,7 @@
   - name: add suoders file for simone
     tags: always
     copy:
-      src: sudoers_simone
+      src: sudoer_simone
       dest: /etc/sudoers.d/simone
       owner: root
       group: root

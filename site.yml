@@ -24,6 +24,16 @@
       reboot: yes
     when: ansible_distribution == "Windows"
 
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create user
+    tags: always
+    user:
+      name: simone
+      groups: root
+
 # Note: Download url zip file and install on dest      
   #- name: install unzip
   #  package:

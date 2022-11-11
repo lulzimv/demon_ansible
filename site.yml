@@ -95,6 +95,13 @@
       state: latest
     when: ansible_distribution == "RedHat"
 
+  - name: enable service httpd and ensure it is not masked
+    systemd:
+      name: httpd
+      enabled: yes
+      masked: no
+    when: ansible_distribution == "RedHat"
+
   - name: start httpd (Red Hat)
     tags: apache,centos, httpd
     service:
@@ -110,7 +117,7 @@
       regexp: '^ServerAdmin'
       line: ServerAdmin lulzimveliu@netkos.live
     when: ansible_distribution == "RedHat"
-#    register: httpd
+    register: httpd
 
   - name: copy default html file for site
     tags: apache,apache2,httpd
@@ -120,13 +127,6 @@
       owner: root
       group: root
       mode: 0644
-
-  - name: enable service httpd and ensure it is not masked
-    systemd:
-      name: httpd
-      enabled: yes
-      masked: no
-    when: ansible_distribution == "RedHat"
 
   - name: Enable http on firewalld
     firewalld:
